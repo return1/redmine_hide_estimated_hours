@@ -15,7 +15,7 @@ module RedmineHideEstimatedHours
       end
 
       module InstanceMethods
-	#see <redmine_src>/app/models/query.rb for overwritten methods
+	      #see <redmine_src>/app/models/query.rb for overwritten methods
 
         def available_columns_with_patch
           return @available_columns if @available_columns
