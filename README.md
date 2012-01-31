@@ -35,7 +35,7 @@ but please don’t blame me
 
 The MIT License
 
-Copyright (c) 2010 Dominique Lederer, [http://return1.at][1]
+Copyright (c) 2012 Dominique Lederer, [http://return1.at][1]
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
