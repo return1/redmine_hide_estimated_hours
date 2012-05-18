@@ -8,7 +8,7 @@ Redmine::Plugin.register :redmine_hide_estimated_hours do
   url 'http://return1.at/'
   author_url 'http://return1.at/'
 
-  requires_redmine :version_or_higher => '1.3.0'
+  requires_redmine :version_or_higher => '1.4.0'
 
 end
 

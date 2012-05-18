@@ -3,7 +3,23 @@
 <h2><%= issue_heading(@issue) %></h2>
 
 <div class="<%= @issue.css_classes %> details">
-        <%= avatar(@issue.author, :size => "50") %>
+  <% if @prev_issue_id || @next_issue_id %>
+    <div class="next-prev-links contextual">
+      <%= link_to_if @prev_issue_id,
+                     "\xc2\xab #{l(:label_previous)}",
+                     issue_path(@prev_issue_id),
+                     :title => "##{@prev_issue_id}" %> |
+      <% if @issue_position && @issue_count %>
+        <span class="position"><%= l(:label_item_position, :position => @issue_position, :count => @issue_count) %></span> |
+      <% end %>
+      <%= link_to_if @next_issue_id,
+                     "#{l(:label_next)} \xc2\xbb",
+                     issue_path(@next_issue_id),
+                     :title => "##{@next_issue_id}" %>
+    </div>
+  <% end %>
+
+  <%= avatar(@issue.author, :size => "50") %>
 
 <div class="subject">
 <%= render_issue_subject_with_tree(@issue) %>
@@ -11,7 +27,7 @@
         <p class="author">
         <%= authoring @issue.created_on, @issue.author %>.
         <% if @issue.created_on != @issue.updated_on %>
-        <%= l(:label_updated_time, time_tag(@issue.updated_on)) %>.
+        <%= l(:label_updated_time, time_tag(@issue.updated_on)).html_safe %>.
         <% end %>
         </p>
 
@@ -32,7 +48,10 @@
     <th class="category"><%=l(:field_category)%>:</th><td class="category"><%=h(@issue.category ? @issue.category.name : "-") %></td>
     <% if User.current.allowed_to?(:view_time_entries, @project) %>
     <th class="spent-time"><%=l(:label_spent_time)%>:</th>
-    <td class="spent-time"><%= @issue.spent_hours > 0 ? (link_to l_hours(@issue.spent_hours), {:controller => 'timelog', :action => 'index', :project_id => @project, :issue_id => @issue}) : "-" %></td>
+    <td class="spent-time"><%= @issue.total_spent_hours > 0 ? (link_to l_hours(@issue.total_spent_hours), {:controller => 'timelog', :action => 'index', :project_id => @project, :issue_id => @issue}) : "-" %></td>
+    <% else %>
+    <th></th>
+    <td></td>
     <% end %>
 </tr>
 <tr>
@@ -49,7 +68,10 @@
 <hr />
 <% if @issue.description? %>
   <div class="contextual">
-  <%= link_to_remote_if_authorized(l(:button_quote), { :url => {:controller => 'journals', :action => 'new', :id => @issue} }, :class => 'icon icon-comment') %>
+  <%= link_to_remote_if_authorized(
+        l(:button_quote),
+        { :url => {:controller => 'journals', :action => 'new', :id => @issue} },
+        :class => 'icon icon-comment') %>
   </div>
 
   <p><strong><%=l(:field_description)%></strong></p>
@@ -129,9 +151,6 @@
 <% content_for :header_tags do %>
     <%= auto_discovery_link_tag(:atom, {:format => 'atom', :key => User.current.rss_key}, :title => "#{@issue.project} - #{@issue.tracker} ##{@issue.id}: #{@issue.subject}") %>
     <%= stylesheet_link_tag 'scm' %>
-    <%= javascript_include_tag 'context_menu' %>
-    <%= stylesheet_link_tag 'context_menu' %>
-    <%= stylesheet_link_tag 'context_menu_rtl' if l(:direction) == 'rtl' %>
 <% end %>
-<div id="context-menu" style="display: none;"></div>
-<%= javascript_tag "new ContextMenu('#{issues_context_menu_path}')" %>
+
+<%= context_menu issues_context_menu_path %>
