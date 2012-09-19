@@ -19,7 +19,7 @@ The installation follows the default path for [Redmine plugins][0].
 Requirements
 ------------
 
-Redmine >= 1.4.0 && Redmine < 2.0.0
+Redmine >= 2.1.0
 
 
 License
