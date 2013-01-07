@@ -25,7 +25,7 @@ Redmine >= 2.1.0
 License
 -------
 
-[http://return1.mit-license.org/][2]
+[http://return1.mit-license.org/][1]
 
 [0]: http://www.redmine.org/projects/redmine/wiki/Plugins "Redmine Plugins"
 [1]: http://return1.mit-license.org/ "mit"
