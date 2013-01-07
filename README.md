@@ -16,6 +16,12 @@ Installation
 The installation follows the default path for [Redmine plugins][0].
 
 
+Usage
+-----
+
+Uncheck the "View spent time" permission for any role that should not be able to see estimated hours.
+
+
 Requirements
 ------------
 
