@@ -73,6 +73,7 @@ end %>
 <% if @issue.description? || @issue.attachments.any? -%>
 <hr />
 <% if @issue.description? %>
+<div class="description">
   <div class="contextual">
   <%= link_to l(:button_quote),
               {:controller => 'journals', :action => 'new', :id => @issue},
@@ -85,6 +86,7 @@ end %>
   <div class="wiki">
   <%= textilizable @issue, :description, :attachments => @issue.attachments %>
   </div>
+</div>
 <% end %>
 <%= link_to_attachments @issue, :thumbnails => true %>
 <% end -%>
@@ -95,7 +97,7 @@ end %>
 <hr />
 <div id="issue_tree">
 <div class="contextual">
-  <%= link_to(l(:button_add), {:controller => 'issues', :action => 'new', :project_id => @project, :issue => {:parent_issue_id => @issue}}) if User.current.allowed_to?(:manage_subtasks, @project) %>
+  <%= link_to_new_subtask(@issue) if User.current.allowed_to?(:manage_subtasks, @project) %>
 </div>
 <p><strong><%=l(:label_subtask_plural)%></strong></p>
 <%= render_descendants_tree(@issue) unless @issue.leaf? %>
