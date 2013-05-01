@@ -1,5 +1,9 @@
 require 'redmine'
 
+require 'query_patch'
+require 'pdf_patch'
+require 'helper_issues_show_detail_after_setting_hook'
+
 Redmine::Plugin.register :redmine_hide_estimated_hours do
   name 'Hide estimated hours'
   author 'Dominique Lederer (return1)'
@@ -8,15 +12,6 @@ Redmine::Plugin.register :redmine_hide_estimated_hours do
   url 'http://return1.at/'
   author_url 'http://return1.at/'
 
-  requires_redmine :version_or_higher => '2.2.0'
-
-  Rails.configuration.to_prepare do
-    require_dependency 'query'
-    unless Query.included_modules.include? RedmineHideEstimatedHours::Patches::QueryPatch
-      Query.send(:include, RedmineHideEstimatedHours::Patches::QueryPatch)
-    end
-  end
+  requires_redmine :version_or_higher => '2.3.0'
 
 end
-
-require 'redmine_hide_estimated_hours/hooks/helper_issues_show_detail_after_setting_hook'
