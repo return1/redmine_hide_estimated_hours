@@ -39,4 +39,4 @@ Redmine >= 2.3.0
 ## License
 
 
-[http://return1.mit-license.org/][(http://return1.mit-license.org/)
+[http://return1.mit-license.org/](http://return1.mit-license.org/)
