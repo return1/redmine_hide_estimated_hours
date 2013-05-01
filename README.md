@@ -18,7 +18,7 @@ not hidden from:
 
 * **REST API Issues Index**: would be possible, but can't be done at the moment because of [this Redmine Bug](http://www.redmine.org/issues/13924)
 
-This plugin is just a limited workaround, i really would love to see this feature implemented in Redmine. If you think so too, please +1 this [this Redmine Ticket](http://www.redmine.org/issues/11963).
+This plugin is just a limited workaround, i really would love to see this feature implemented in Redmine. If you think so too, please +1 [this Redmine Ticket](http://www.redmine.org/issues/11963).
 
 
 ## Installation
