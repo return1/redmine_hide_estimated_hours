@@ -13,7 +13,7 @@ module PDFPatch
   module InstanceMethods
 
     def issue_to_pdf_with_patch(issue, assoc={})
-      pdf = Redmine::Export::PDF::ITCPDF.new(current_language)
+      pdf = ITCPDF.new(current_language)
       pdf.SetTitle("#{issue.project} - #{issue.tracker} ##{issue.id}")
       pdf.alias_nb_pages
       pdf.footer_date = format_date(Date.today)
@@ -58,8 +58,8 @@ module PDFPatch
         right << nil
       end
 
-      half = (issue.custom_field_values.size / 2.0).ceil
-      issue.custom_field_values.each_with_index do |custom_value, i|
+      half = (issue.visible_custom_field_values.size / 2.0).ceil
+      issue.visible_custom_field_values.each_with_index do |custom_value, i|
         (i < half ? left : right) << [custom_value.custom_field.name, show_value(custom_value)]
       end
 
@@ -170,7 +170,7 @@ module PDFPatch
           pdf.RDMCell(190,5, title)
           pdf.Ln
           pdf.SetFontStyle('I',8)
-          details_to_strings(journal.details, true).each do |string|
+          details_to_strings(journal.visible_details, true).each do |string|
             pdf.RDMMultiCell(190,5, "- " + string)
           end
           if journal.notes?

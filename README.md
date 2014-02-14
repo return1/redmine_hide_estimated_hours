@@ -11,7 +11,7 @@ This Redmine plugin reuses the standard "view_time_entries" permission to hide t
 
 not optimal hidden from:
 
-* **Issues journal**: solution not optimal, the estimated hours line is still visible, but a least the old and new value is stripped from the output.
+* **Issues journal**: solution not optimal, the estimated hours line is still visible, but at least the old and new value is stripped from the output.
 * **Issues mail notification**: solution not optimal, mail is sent, when estimated hours change, but at least the old and new value is stripped out.
 
 not hidden from:
@@ -33,7 +33,7 @@ Uncheck the "View spent time" permission for any role that should not be able to
 
 ## Requirements
 
-Redmine >= 2.3.0
+Redmine >= 2.4.0
 
 
 ## License
