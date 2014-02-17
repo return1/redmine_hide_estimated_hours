@@ -1,5 +1,7 @@
 ### Hide Estimated Hours (Redmine Plugin)
 
+**THIS BRANCH DOES NOT WORK AT THE MOMENT, DO NOT USE**
+
 This Redmine plugin reuses the standard "view_time_entries" permission to hide the estimated hours for specific roles from
 
 * **Issues view**
