@@ -12,7 +12,9 @@ This Redmine plugin reuses the standard "view_time_entries" permission to hide t
 * **Issues journal**
 * **Issues mail notifications**
 
-This plugin is just a limited workaround, i really would love to see this feature implemented in Redmine. If you think so too, please +1 [this Redmine Ticket](http://www.redmine.org/issues/11963).
+This plugin is just a limited workaround, i really would love to see this feature implemented in Redmine. If you think so
+too, please +1 [this](http://www.redmine.org/issues/12005) and [this](http://www.redmine.org/issues/11963)
+Redmine Ticket.
 
 
 ## Installation
