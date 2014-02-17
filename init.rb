@@ -1,8 +1,8 @@
 require 'redmine'
 
 require 'query_patch'
+require 'journal_patch'
 require 'pdf_patch'
-require 'helper_issues_show_detail_after_setting_hook'
 
 Redmine::Plugin.register :redmine_hide_estimated_hours do
   name 'Hide estimated hours'
