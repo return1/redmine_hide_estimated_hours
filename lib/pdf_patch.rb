@@ -13,7 +13,7 @@ module PDFPatch
   module InstanceMethods
 
     def issue_to_pdf_with_patch(issue, assoc={})
-      pdf = ITCPDF.new(current_language)
+      pdf = ::Redmine::Export::PDF::ITCPDF.new(current_language)
       pdf.SetTitle("#{issue.project} - #{issue.tracker} ##{issue.id}")
       pdf.alias_nb_pages
       pdf.footer_date = format_date(Date.today)
