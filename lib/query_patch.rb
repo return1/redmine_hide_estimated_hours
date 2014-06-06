@@ -16,7 +16,7 @@ module QueryPatch
     def available_filters_with_patch
       return @available_filters if @available_filters
       @available_filters = available_filters_without_patch
-      @available_filters.delete("estimated_hours") if !User.current.allowed_to?(:view_time_entries, project)
+      @available_filters.delete("estimated_hours") if (!User.current.allowed_to?(:view_time_entries, project) and !User.current.admin)
       return @available_filters
     end
 
@@ -38,7 +38,7 @@ module IssueQueryPatch
     def available_columns_with_patch
       return @available_columns if @available_columns
       @available_columns = available_columns_without_patch
-      if !User.current.allowed_to?(:view_time_entries, project)
+      if (!User.current.allowed_to?(:view_time_entries, project) and !User.current.admin)
         @available_columns.delete_if { |querycolumn| querycolumn.name == :estimated_hours } #remove :estimated_hours from Query.available_columns
       end
       return @available_columns
