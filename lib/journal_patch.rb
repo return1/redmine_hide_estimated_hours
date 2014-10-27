@@ -13,6 +13,7 @@ module JournalPatch
   module InstanceMethods
     #see <redmine_src>/app/models/journal.rb for overwritten methods
 
+    # Returns journal details that are visible to user
     def visible_details_with_patch(user=User.current)
       details.select do |detail|
         if detail.property == 'cf'
