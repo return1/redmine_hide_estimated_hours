@@ -34,4 +34,3 @@ api.array :issues, api_meta(:total_count => @issue_count, :offset => @offset, :l
     end
   end
 end
-

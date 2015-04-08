@@ -1,6 +1,6 @@
-require_dependency 'redmine/export/pdf'
+require_dependency 'redmine/export/pdf/issues_pdf_helper'
 
-module PDFPatch
+module IssuesPdfHelperPatch
 
   def self.included(base)
     base.send(:include, InstanceMethods)
@@ -12,7 +12,6 @@ module PDFPatch
 
   module InstanceMethods
 
-    # Returns a PDF string of a single issue
     def issue_to_pdf_with_patch(issue, assoc={})
       pdf = ::Redmine::Export::PDF::ITCPDF.new(current_language)
       pdf.set_title("#{issue.project} - #{issue.tracker} ##{issue.id}")
@@ -112,8 +111,13 @@ module PDFPatch
 
       # Set resize image scale
       pdf.set_image_scale(1.6)
-      pdf.RDMwriteHTMLCell(35+155, 5, '', '',
-                           issue.description.to_s, issue.attachments, "LRB")
+      text = textilizable(issue, :description,
+                          :only_path => false,
+                          :edit_section_links => false,
+                          :headings => false,
+                          :inline_attachments => false
+      )
+      pdf.RDMwriteFormattedCell(35+155, 5, '', '', text, issue.attachments, "LRB")
 
       unless issue.leaf?
         truncate_length = (!is_cjk? ? 90 : 65)
@@ -139,16 +143,14 @@ module PDFPatch
         pdf.RDMCell(35+155,5, l(:label_related_issues) + ":", "LTR")
         pdf.ln
         relations.each do |relation|
-          buf = ""
-          buf += "#{l(relation.label_for(issue))} "
-          if relation.delay && relation.delay != 0
-            buf += "(#{l('datetime.distance_in_words.x_days', :count => relation.delay)}) "
-          end
-          if Setting.cross_project_issue_relations?
-            buf += "#{relation.other_issue(issue).project} - "
-          end
-          buf += "#{relation.other_issue(issue).tracker}" +
-              " # #{relation.other_issue(issue).id}: #{relation.other_issue(issue).subject}"
+          buf = relation.to_s(issue) {|other|
+            text = ""
+            if Setting.cross_project_issue_relations?
+              text += "#{relation.other_issue(issue).project} - "
+            end
+            text += "#{other.tracker} ##{other.id}: #{other.subject}"
+            text
+          }
           buf = buf.truncate(truncate_length)
           pdf.SetFontStyle('', 8)
           pdf.RDMCell(35+155-60, 5, buf, border_first)
@@ -199,8 +201,13 @@ module PDFPatch
           if journal.notes?
             pdf.ln unless journal.details.empty?
             pdf.SetFontStyle('',8)
-            pdf.RDMwriteHTMLCell(190,5,'','',
-                                 journal.notes.to_s, issue.attachments, "")
+            text = textilizable(journal, :notes,
+                                :only_path => false,
+                                :edit_section_links => false,
+                                :headings => false,
+                                :inline_attachments => false
+            )
+            pdf.RDMwriteFormattedCell(190,5,'','', text, issue.attachments, "")
           end
           pdf.ln
         end
