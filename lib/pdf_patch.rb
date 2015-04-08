@@ -1,3 +1,4 @@
+require_dependency 'redmine/export/pdf'
 require_dependency 'redmine/export/pdf/issues_pdf_helper'
 
 module IssuesPdfHelperPatch
