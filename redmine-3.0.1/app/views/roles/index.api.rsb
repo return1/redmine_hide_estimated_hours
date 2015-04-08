@@ -1,8 +1,0 @@
-api.array :roles do
-  @roles.each do |role|
-    api.role do
-      api.id role.id
-      api.name role.name
-    end
-  end
-end
