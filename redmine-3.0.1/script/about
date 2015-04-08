@@ -1,0 +1,2 @@
+#!/usr/bin/env ruby
+abort "script/about no longer exists, please use bin/about instead."

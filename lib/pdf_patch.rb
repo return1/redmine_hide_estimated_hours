@@ -232,4 +232,4 @@ module IssuesPdfHelperPatch
   end
 end
 
-Redmine::Export::PDF.send(:include, PDFPatch)
+Redmine::Export::PDF::IssuesPdfHelper.send(:include, IssuesPdfHelperPatch)

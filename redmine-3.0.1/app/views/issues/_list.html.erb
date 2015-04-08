@@ -1,0 +1,45 @@
+<%= form_tag({}) do -%>
+<%= hidden_field_tag 'back_url', url_for(params), :id => nil %>
+<div class="autoscroll">
+<table class="list issues <%= sort_css_classes %>">
+  <thead>
+    <tr>
+      <th class="checkbox hide-when-print">
+        <%= link_to image_tag('toggle_check.png'), {},
+                              :onclick => 'toggleIssuesSelection(this); return false;',
+                              :title => "#{l(:button_check_all)}/#{l(:button_uncheck_all)}" %>
+      </th>
+      <% query.inline_columns.each do |column| %>
+        <%= column_header(column) %>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+  <% grouped_issue_list(issues, @query, @issue_count_by_group) do |issue, level, group_name, group_count| -%>
+  <% if group_name %>
+    <% reset_cycle %>
+    <tr class="group open">
+      <td colspan="<%= query.inline_columns.size + 2 %>">
+        <span class="expander" onclick="toggleRowGroup(this);">&nbsp;</span>
+        <%= group_name %> <span class="count"><%= group_count %></span>
+        <%= link_to_function("#{l(:button_collapse_all)}/#{l(:button_expand_all)}",
+                             "toggleAllRowGroups(this)", :class => 'toggle-all') %>
+      </td>
+    </tr>
+  <% end %>
+  <tr id="issue-<%= issue.id %>" class="hascontextmenu <%= cycle('odd', 'even') %> <%= issue.css_classes %> <%= level > 0 ? "idnt idnt-#{level}" : nil %>">
+    <td class="checkbox hide-when-print"><%= check_box_tag("ids[]", issue.id, false, :id => nil) %></td>
+    <%= raw query.inline_columns.map {|column| "<td class=\"#{column.css_classes}\">#{column_content(column, issue)}</td>"}.join %>
+  </tr>
+  <% @query.block_columns.each do |column|
+       if (text = column_content(column, issue)) && text.present? -%>
+  <tr class="<%= current_cycle %>">
+    <td colspan="<%= @query.inline_columns.size + 1 %>" class="<%= column.css_classes %>"><%= text %></td>
+  </tr>
+  <% end -%>
+  <% end -%>
+  <% end -%>
+  </tbody>
+</table>
+</div>
+<% end -%>

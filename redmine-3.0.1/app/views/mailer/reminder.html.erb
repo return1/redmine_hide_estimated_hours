@@ -1,0 +1,9 @@
+<p><%= l(:mail_body_reminder, :count => @issues.size, :days => @days) %></p>
+
+<ul>
+<% @issues.each do |issue| -%>
+  <li><%= link_to_issue(issue, :project => true, :only_path => false) %></li>
+<% end -%>
+</ul>
+
+<p><%= link_to l(:label_issue_view_all), @issues_url %></p>
