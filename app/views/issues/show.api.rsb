@@ -16,8 +16,8 @@ api.issue do
   api.due_date @issue.due_date
   api.done_ratio @issue.done_ratio
   api.is_private @issue.is_private
-  api.estimated_hours @issue.estimated_hours if User.current.allowed_to?(:view_time_entries, @project)
-  api.spent_hours(@issue.spent_hours) if User.current.allowed_to?(:view_time_entries, @project)
+  api.estimated_hours @issue.estimated_hours if User.current.allowed_to_view_all_time_entries?(@project)
+  api.spent_hours(@issue.spent_hours) if User.current.allowed_to_view_all_time_entries?(@project)
 
   render_api_custom_values @issue.visible_custom_field_values, api
 
@@ -40,14 +40,14 @@ api.issue do
   end if include_in_api_response?('relations') && @relations.present?
 
   api.array :changesets do
-    @issue.changesets.each do |changeset|
+    @changesets.each do |changeset|
       api.changeset :revision => changeset.revision do
         api.user(:id => changeset.user_id, :name => changeset.user.name) unless changeset.user.nil?
         api.comments changeset.comments
         api.committed_on changeset.committed_on
       end
     end
-  end if include_in_api_response?('changesets') && User.current.allowed_to?(:view_changesets, @project)
+  end if include_in_api_response?('changesets')
 
   api.array :journals do
     @journals.each do |journal|

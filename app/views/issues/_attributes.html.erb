@@ -4,14 +4,14 @@
 <div class="splitcontentleft">
 <% if @issue.safe_attribute?('status_id') && @allowed_statuses.present? %>
 <p><%= f.select :status_id, (@allowed_statuses.collect {|p| [p.name, p.id]}), {:required => true},
-                :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}')" %></p>
+                :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
 <%= hidden_field_tag 'was_default_status', @issue.status_id, :id => nil if @issue.status == @issue.default_status %>
 <% else %>
 <p><label><%= l(:field_status) %></label> <%= @issue.status %></p>
 <% end %>
 
 <% if @issue.safe_attribute? 'priority_id' %>
-<p><%= f.select :priority_id, (@priorities.collect {|p| [p.name, p.id]}), {:required => true}, :disabled => !@issue.leaf? %></p>
+<p><%= f.select :priority_id, (@priorities.collect {|p| [p.name, p.id]}), {:required => true} %></p>
 <% end %>
 
 <% if @issue.safe_attribute? 'assigned_to_id' %>
@@ -48,27 +48,25 @@
 
 <% if @issue.safe_attribute? 'start_date' %>
 <p id="start_date_area">
-  <%= f.text_field(:start_date, :size => 10, :disabled => !@issue.leaf?,
-                   :required => @issue.required_attribute?('start_date')) %>
+  <%= f.text_field(:start_date, :size => 10, :required => @issue.required_attribute?('start_date')) %>
   <%= calendar_for('issue_start_date') if @issue.leaf? %>
 </p>
 <% end %>
 
 <% if @issue.safe_attribute? 'due_date' %>
 <p id="due_date_area">
-  <%= f.text_field(:due_date, :size => 10, :disabled => !@issue.leaf?,
-                   :required => @issue.required_attribute?('due_date')) %>
+  <%= f.text_field(:due_date, :size => 10, :required => @issue.required_attribute?('due_date')) %>
   <%= calendar_for('issue_due_date') if @issue.leaf? %>
 </p>
 <% end %>
 
 <% if @issue.safe_attribute? 'estimated_hours' %>
-<% if User.current.allowed_to?(:view_time_entries, @project) %>
-<p><%= f.text_field :estimated_hours, :size => 3, :disabled => !@issue.leaf?, :required => @issue.required_attribute?('estimated_hours') %> <%= l(:field_hours) %></p>
+<% if User.current.allowed_to_view_all_time_entries?(@project) %>
+<p><%= f.text_field :estimated_hours, :size => 3, :required => @issue.required_attribute?('estimated_hours') %> <%= l(:field_hours) %></p>
 <% end %>
 <% end %>
 
-<% if @issue.safe_attribute?('done_ratio') && @issue.leaf? && Issue.use_field_for_done_ratio? %>
+<% if @issue.safe_attribute?('done_ratio') && Issue.use_field_for_done_ratio? %>
 <p><%= f.select :done_ratio, ((0..10).to_a.collect {|r| ["#{r*10} %", r*10] }), :required => @issue.required_attribute?('done_ratio') %></p>
 <% end %>
 </div>
