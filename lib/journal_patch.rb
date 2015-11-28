@@ -21,7 +21,7 @@ module JournalPatch
         elsif detail.property == 'relation'
           Issue.find_by_id(detail.value || detail.old_value).try(:visible?, user)
         # removing estimated time in this elsif
-        elsif detail.property == 'attr' && detail.prop_key == 'estimated_hours' && !user.allowed_to?(:view_time_entries, project)
+        elsif detail.property == 'attr' && detail.prop_key == 'estimated_hours' && !user.allowed_to_view_all_time_entries?(project)
           false
         else
           true

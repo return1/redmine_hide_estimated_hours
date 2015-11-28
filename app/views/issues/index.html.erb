@@ -39,10 +39,12 @@
             <td><%= l(:button_show) %></td>
             <td><%= available_block_columns_tags(@query) %></td>
           </tr>
-          <tr>
-            <td><%= l(:label_total_plural) %></td>
-            <td><%= available_totalable_columns_tags(@query) %></td>
-          </tr>
+          <% if User.current.allowed_to_view_all_time_entries?(@project) %>
+            <tr>
+              <td><%= l(:label_total_plural) %></td>
+              <td><%= available_totalable_columns_tags(@query) %></td>
+            </tr>
+          <% end %>
         </table>
       </div>
     </fieldset>
