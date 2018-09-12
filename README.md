@@ -4,6 +4,7 @@ This Redmine plugin reuses the standard "view_time_entries" permission to hide t
 
 * **Issues view**
 * **Issues edit**
+* **Issues bulk edit**
 * **Issues grid overview, available columns**
 * **Issues grid overview, selectable filter**
 * **Issues PDF**
@@ -29,7 +30,7 @@ Uncheck the "View spent time" permission for any role that should not be able to
 
 ## Requirements
 
-Redmine >= 3.2
+Redmine >= 3.4
 (see branches for older compatible versions)
 
 
