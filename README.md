@@ -4,6 +4,7 @@ This Redmine plugin reuses the standard "view_time_entries" permission to hide t
 
 * **Issues view**
 * **Issues edit**
+* **Issues bulk edit**
 * **Issues grid overview, available columns**
 * **Issues grid overview, selectable filter**
 * **Issues PDF**

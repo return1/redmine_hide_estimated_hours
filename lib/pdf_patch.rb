@@ -12,6 +12,7 @@ module IssuesPdfHelperPatch
   end
 
   module InstanceMethods
+    #see <redmine_src>/lib/redmine/export/pdf/issues_pdf_helper.rb for overwritten methods
 
     def issue_to_pdf_with_patch(issue, assoc={})
       pdf = ::Redmine::Export::PDF::ITCPDF.new(current_language)
@@ -60,7 +61,7 @@ module IssuesPdfHelperPatch
       end
 
       custom_field_values = issue.visible_custom_field_values.reject {|value| value.custom_field.full_width_layout?}
-      half = (issue.visible_custom_field_values.size / 2.0).ceil
+      half = (custom_field_values.size / 2.0).ceil
       custom_field_values.each_with_index do |custom_value, i|
         (i < half ? left : right) << [custom_value.custom_field.name, show_value(custom_value, false)]
       end
@@ -120,16 +121,16 @@ module IssuesPdfHelperPatch
                           :inline_attachments => false
       )
       pdf.RDMwriteFormattedCell(35+155, 5, '', '', text, issue.attachments, "LRB")
-          
+
       custom_field_values = issue.visible_custom_field_values.select {|value| value.custom_field.full_width_layout?}
       custom_field_values.each do |value|
-         text = show_value(value, false)
-         next if text.blank?
+        text = show_value(value, false)
+        next if text.blank?
 
-	 pdf.SetFontStyle('B',9)
-         pdf.RDMCell(35+155, 5, value.custom_field.name, "LRT", 1)
-         pdf.SetFontStyle('',9)
-         pdf.RDMwriteHTMLCell(35+155, 5, '', '', text, issue.attachments, "LRB")
+        pdf.SetFontStyle('B',9)
+        pdf.RDMCell(35+155, 5, value.custom_field.name, "LRT", 1)
+        pdf.SetFontStyle('',9)
+        pdf.RDMwriteHTMLCell(35+155, 5, '', '', text, issue.attachments, "LRB")
       end
 
       unless issue.leaf?
