@@ -7,7 +7,8 @@ module IssuesPdfHelperPatch
     base.send(:include, InstanceMethods)
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
-      alias_method_chain :issue_to_pdf, :patch
+      alias_method :issue_to_pdf_without_patch, :issue_to_pdf
+      alias_method :issue_to_pdf, :issue_to_pdf_with_patch
     end
   end
 
