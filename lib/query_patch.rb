@@ -8,6 +8,8 @@ module QueryPatch
       unloadable # Send unloadable so it will not be unloaded in development
       alias_method :available_filters_without_patch, :available_filters
       alias_method :available_filters, :available_filters_with_patch
+      alias_method :available_totalable_columns_without_patch, :available_totalable_columns
+      alias_method :available_totalable_columns, :available_totalable_columns_with_patch
     end
   end
 
@@ -19,6 +21,15 @@ module QueryPatch
       @available_filters = available_filters_without_patch
       @available_filters.delete("estimated_hours") if (!User.current.allowed_to?(:view_time_entries, project) and !User.current.admin)
       return @available_filters
+    end
+
+    def available_totalable_columns_with_patch
+      @available_totalable_columns = available_totalable_columns_without_patch
+      if (!User.current.allowed_to?(:view_time_entries, project) and !User.current.admin)
+        @available_totalable_columns.delete_if { |querycolumn| querycolumn.name == :estimated_hours } #remove :estimated_hours from Query.available_totalable_columns
+        @available_totalable_columns.delete_if { |querycolumn| querycolumn.name == :total_estimated_hours } #remove :total_estimated_hours from Query.available_totalable_columns
+      end
+      return @available_totalable_columns
     end
 
   end
