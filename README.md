@@ -30,7 +30,7 @@ Uncheck the "View spent time" permission for any role that should not be able to
 
 ## Requirements
 
-Redmine >= 4.0.5, < 4.1
+Redmine >= 4.1.0, < 4.2
 (see branches for older compatible versions)
 
 

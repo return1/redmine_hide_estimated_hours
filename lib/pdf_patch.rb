@@ -54,12 +54,8 @@ module IssuesPdfHelperPatch
       right << [l(:label_spent_time), l_hours(issue.total_spent_hours)] if User.current.allowed_to?(:view_time_entries, issue.project)
 
       rows = left.size > right.size ? left.size : right.size
-      while left.size < rows
-        left << nil
-      end
-      while right.size < rows
-        right << nil
-      end
+      left  << nil while left.size  < rows
+      right << nil while right.size < rows
 
       custom_field_values = issue.visible_custom_field_values.reject {|value| value.custom_field.full_width_layout?}
       half = (custom_field_values.size / 2.0).ceil
@@ -115,12 +111,14 @@ module IssuesPdfHelperPatch
 
       # Set resize image scale
       pdf.set_image_scale(1.6)
-      text = textilizable(issue, :description,
-                          :only_path => false,
-                          :edit_section_links => false,
-                          :headings => false,
-                          :inline_attachments => false
-      )
+      text =
+          textilizable(
+              issue, :description,
+              :only_path => false,
+              :edit_section_links => false,
+              :headings => false,
+              :inline_attachments => false
+          )
       pdf.RDMwriteFormattedCell(35+155, 5, '', '', text, issue.attachments, "LRB")
 
       custom_field_values = issue.visible_custom_field_values.select {|value| value.custom_field.full_width_layout?}
@@ -192,8 +190,9 @@ module IssuesPdfHelperPatch
           pdf.ln
           unless changeset.comments.blank?
             pdf.SetFontStyle('',8)
-            pdf.RDMwriteHTMLCell(190,5,'','',
-                                 changeset.comments.to_s, issue.attachments, "")
+            pdf.RDMwriteHTMLCell(
+                190,5,'','',
+                changeset.comments.to_s, issue.attachments, "")
           end
           pdf.ln
         end
@@ -216,12 +215,14 @@ module IssuesPdfHelperPatch
           if journal.notes?
             pdf.ln unless journal.details.empty?
             pdf.SetFontStyle('',8)
-            text = textilizable(journal, :notes,
-                                :only_path => false,
-                                :edit_section_links => false,
-                                :headings => false,
-                                :inline_attachments => false
-            )
+            text =
+                textilizable(
+                    journal, :notes,
+                    :only_path => false,
+                    :edit_section_links => false,
+                    :headings => false,
+                    :inline_attachments => false
+                )
             pdf.RDMwriteFormattedCell(190,5,'','', text, issue.attachments, "")
           end
           pdf.ln

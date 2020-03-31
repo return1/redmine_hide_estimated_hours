@@ -26,8 +26,8 @@
   <% end %>
 
   <div class="gravatar-with-child">
-    <%= avatar(@issue.author, :size => "50", :title => l(:field_author)) %>
-    <%= avatar(@issue.assigned_to, :size => "22", :class => "gravatar gravatar-child", :title => l(:field_assigned_to)) if @issue.assigned_to %>
+    <%= author_avatar(@issue.author, :size => "50") %>
+    <%= assignee_avatar(@issue.assigned_to, :size => "22", :class => "gravatar-child") if @issue.assigned_to %>
   </div>
 
 <div class="subject">
@@ -59,7 +59,7 @@
     rows.right l(:field_start_date), format_date(@issue.start_date), :class => 'start-date'
   end
   unless @issue.disabled_core_fields.include?('due_date')
-    rows.right l(:field_due_date), format_date(@issue.due_date), :class => 'due-date'
+    rows.right l(:field_due_date), issue_due_date_details(@issue), :class => 'due-date'
   end
   unless @issue.disabled_core_fields.include?('done_ratio')
     rows.right l(:field_done_ratio), progress_bar(@issue.done_ratio, :legend => "#{@issue.done_ratio}%"), :class => 'progress'
@@ -124,19 +124,9 @@ end %>
 
 <%= render partial: 'action_menu_edit' if User.current.wants_comments_in_reverse_order? %>
 
-<% if @changesets.present? %>
-<div id="issue-changesets">
-<h3><%=l(:label_associated_revisions)%></h3>
-<%= render :partial => 'changesets', :locals => { :changesets => @changesets} %>
-</div>
-<% end %>
-
-<% if @journals.present? %>
 <div id="history">
-<h3><%=l(:label_history)%></h3>
-<%= render :partial => 'history', :locals => { :issue => @issue, :journals => @journals } %>
+<%= render_tabs issue_history_tabs, issue_history_default_tab %>
 </div>
-<% end %>
 
 <%= render partial: 'action_menu_edit' unless User.current.wants_comments_in_reverse_order? %>
 
