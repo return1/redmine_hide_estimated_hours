@@ -15,11 +15,14 @@
 <% end %>
 
 <% if @issue.safe_attribute? 'assigned_to_id' %>
-<p><%= f.select :assigned_to_id, principals_options_for_select(@issue.assignable_users, @issue.assigned_to), :include_blank => true, :required => @issue.required_attribute?('assigned_to_id') %></p>
+<p><%= f.select :assigned_to_id, principals_options_for_select(@issue.assignable_users, @issue.assigned_to),
+                :include_blank => true, :required => @issue.required_attribute?('assigned_to_id') %></p>
 <% end %>
 
 <% if @issue.safe_attribute?('category_id') && @issue.project.issue_categories.any? %>
-<p><%= f.select :category_id, (@issue.project.issue_categories.collect {|c| [c.name, c.id]}), {:include_blank => true, :required => @issue.required_attribute?('category_id')}, :onchange => ("updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" if @issue.new_record?) %>
+<p><%= f.select :category_id, (@issue.project.issue_categories.collect {|c| [c.name, c.id]}),
+                {:include_blank => true, :required => @issue.required_attribute?('category_id')},
+                 :onchange => ("updateIssueFrom('#{escape_javascript(update_issue_form_path(@project, @issue))}', this)" if @issue.new_record?) %>
 <%= link_to(l(:label_issue_category_new),
             new_project_issue_category_path(@issue.project),
             :remote => true,
@@ -31,7 +34,8 @@
 <% end %>
 
 <% if @issue.safe_attribute?('fixed_version_id') && @issue.assignable_versions.any? %>
-<p><%= f.select :fixed_version_id, version_options_for_select(@issue.assignable_versions, @issue.fixed_version), :include_blank => true, :required => @issue.required_attribute?('fixed_version_id') %>
+<p><%= f.select :fixed_version_id, version_options_for_select(@issue.assignable_versions, @issue.fixed_version),
+                :include_blank => true, :required => @issue.required_attribute?('fixed_version_id') %>
 <%= link_to(l(:label_version_new),
             new_project_version_path(@issue.project),
             :remote => true,

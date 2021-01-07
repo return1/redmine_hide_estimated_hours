@@ -28,6 +28,7 @@
 <fieldset class="attributes">
 <legend><%= l(:label_change_properties) %></legend>
 
+<div class="splitcontent">
 <div class="splitcontentleft">
 <% if @allowed_projects.present? %>
 <p>
@@ -190,18 +191,31 @@
 </p>
 <% end %>
 </div>
+</div>
 </fieldset>
 
 <fieldset>
 <legend><%= l(:field_notes) %></legend>
-<%= text_area_tag 'notes', @notes, :cols => 60, :rows => 10, :class => 'wiki-edit' %>
+<%= text_area_tag 'notes', @notes, :cols => 60, :rows => 10, :class => 'wiki-edit',
+                  :data => {
+                      :auto_complete => true,
+                      :issues_url => auto_complete_issues_path(:project_id => @project, :q => '')
+                  }
+%>
 <%= wikitoolbar_for 'notes' %>
+
+<% if @safe_attributes.include?('private_notes') %>
+  <label class="inline">
+  	<%= check_box_tag 'issue[private_notes]', 1, false %>
+  	<%= l(:field_private_notes) %>
+  </label>
+<% end %>
 </fieldset>
 </div>
 
 <% if @values_by_custom_field.present? %>
 <div class="flash warning">
-  <%= l(:warning_fields_cleared_on_bulk_edit) %>:<br /> 
+  <%= l(:warning_fields_cleared_on_bulk_edit) %>:<br />
   <%= safe_join(@values_by_custom_field.map {|field, ids| content_tag "span", "#{field.name} (#{ids.size})"}, ', ') %>
 </div>
 <% end %>
@@ -222,7 +236,7 @@
 <% end %>
 
 <%= javascript_tag do %>
-$(window).load(function(){
+$(window).on('load', function(){
   $(document).on('change', 'input[data-disables]', function(){
     if ($(this).prop('checked')){
       $($(this).data('disables')).attr('disabled', true).val('');
