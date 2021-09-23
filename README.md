@@ -14,7 +14,7 @@ This Redmine plugin reuses the standard "view_time_entries" permission to hide t
 * **Issues mail notifications**
 
 This plugin is just a limited workaround, i really would love to see this feature implemented in Redmine. If you think so
-too, please +1 [this](http://www.redmine.org/issues/12005) and [this](http://www.redmine.org/issues/11963)
+too, please contribute to or +1 [this](http://www.redmine.org/issues/12005) and [this](http://www.redmine.org/issues/11963)
 Redmine Ticket.
 
 
@@ -30,7 +30,7 @@ Uncheck the "View spent time" permission for any role that should not be able to
 
 ## Requirements
 
-Redmine >= 4.1.1, < 4.2
+Redmine >= 4.2.2, < 4.3
 (see branches for older compatible versions)
 
 
