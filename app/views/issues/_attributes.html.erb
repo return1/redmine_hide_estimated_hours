@@ -3,8 +3,13 @@
 <div class="splitcontent">
 <div class="splitcontentleft">
 <% if @issue.safe_attribute?('status_id') && @allowed_statuses.present? %>
-<p><%= f.select :status_id, (@allowed_statuses.collect {|p| [p.name, p.id]}), {:required => true},
-                :onchange => "updateIssueFrom('#{escape_javascript(update_issue_form_path(@project, @issue))}', this)" %></p>
+<p>
+  <%= f.select :status_id, (@allowed_statuses.collect {|p| [p.name, p.id]}), {:required => true},
+                :onchange => "updateIssueFrom('#{escape_javascript(update_issue_form_path(@project, @issue))}', this)" %>
+  <% if @issue.transition_warning %>
+    <span class="icon-only icon-warning" title="<%= @issue.transition_warning %>"><%= @issue.transition_warning %></span>
+  <% end %>
+</p>
 <%= hidden_field_tag 'was_default_status', @issue.status_id, :id => nil if @issue.status == @issue.default_status %>
 <% else %>
 <p><label><%= l(:field_status) %></label> <%= @issue.status %></p>
@@ -15,8 +20,13 @@
 <% end %>
 
 <% if @issue.safe_attribute? 'assigned_to_id' %>
-<p><%= f.select :assigned_to_id, principals_options_for_select(@issue.assignable_users, @issue.assigned_to),
-                :include_blank => true, :required => @issue.required_attribute?('assigned_to_id') %></p>
+<p>
+  <%= f.select :assigned_to_id, principals_options_for_select(@issue.assignable_users, @issue.assigned_to),
+                  :include_blank => true, :required => @issue.required_attribute?('assigned_to_id') %>
+  <% if @issue.assignable_users.include?(User.current) %>
+    <a class="assign-to-me-link<%= ' hidden' if @issue.assigned_to_id == User.current.id %>" href="#" data-id="<%= User.current.id %>"><%= l(:label_assign_to_me) %></a>
+  <% end %>
+</p>
 <% end %>
 
 <% if @issue.safe_attribute?('category_id') && @issue.project.issue_categories.any? %>
@@ -51,7 +61,8 @@
 <div class="splitcontentright">
 <% if @issue.safe_attribute? 'parent_issue_id' %>
 <p id="parent_issue"><%= f.text_field :parent_issue_id, :size => 10,
-                                      :required => @issue.required_attribute?('parent_issue_id') %></p>
+                                      :required => @issue.required_attribute?('parent_issue_id'),
+                                      :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
 <%= javascript_tag "observeAutocompleteField('issue_parent_issue_id', '#{escape_javascript(auto_complete_issues_path(:project_id => @issue.project, :scope => Setting.cross_project_subtasks, :status => @issue.closed? ? 'c' : 'o', :issue_id => @issue.id))}')" %>
 <% end %>
 
