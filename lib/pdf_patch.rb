@@ -115,25 +115,23 @@ module IssuesPdfHelperPatch
 
       # Set resize image scale
       pdf.set_image_scale(1.6)
-      text =
-        textilizable(
-          issue, :description,
-          :only_path => false,
-          :edit_section_links => false,
-          :headings => false,
-          :inline_attachments => false
-        )
+      text = pdf_format_text(issue, :description)
       pdf.RDMwriteFormattedCell(35+155, 5, '', '', text, issue.attachments, "LRB")
 
       custom_field_values = issue.visible_custom_field_values.select {|value| value.custom_field.full_width_layout?}
       custom_field_values.each do |value|
-        text = show_value(value, false)
+        is_html = value.custom_field.full_text_formatting?
+        text = show_value(value, is_html)
         next if text.blank?
 
         pdf.SetFontStyle('B', 9)
         pdf.RDMCell(35+155, 5, value.custom_field.name, "LRT", 1)
         pdf.SetFontStyle('', 9)
-        pdf.RDMwriteHTMLCell(35+155, 5, '', '', text, issue.attachments, "LRB")
+        if is_html
+          pdf.RDMwriteFormattedCell(35+155, 5, '', '', text, issue.attachments, "LRB")
+        else
+          pdf.RDMwriteHTMLCell(35+155, 5, '', '', text, issue.attachments, "LRB")
+        end
       end
 
       unless issue.leaf?
@@ -220,14 +218,7 @@ module IssuesPdfHelperPatch
           if journal.notes?
             pdf.ln unless journal.details.empty?
             pdf.SetFontStyle('', 8)
-            text =
-              textilizable(
-                journal, :notes,
-                :only_path => false,
-                :edit_section_links => false,
-                :headings => false,
-                :inline_attachments => false
-              )
+            text = pdf_format_text(journal, :notes)
             pdf.RDMwriteFormattedCell(190, 5, '', '', text, issue.attachments, "")
           end
           pdf.ln
