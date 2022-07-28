@@ -1,7 +1,7 @@
 require_dependency 'redmine/export/pdf'
 require_dependency 'redmine/export/pdf/issues_pdf_helper'
 
-module IssuesPdfHelperPatch
+module PdfPatch
 
   def self.included(base)
     base.send(:include, InstanceMethods)
@@ -244,4 +244,4 @@ module IssuesPdfHelperPatch
   end
 end
 
-Redmine::Export::PDF::IssuesPdfHelper.send(:include, IssuesPdfHelperPatch)
+Redmine::Export::PDF::IssuesPdfHelper.send(:include, PdfPatch)
