@@ -1,8 +1,8 @@
 require 'redmine'
 
-require 'query_patch'
-require 'journal_patch'
-require 'pdf_patch'
+require File.dirname(__FILE__) + '/lib/query_patch'
+require File.dirname(__FILE__) + '/lib/journal_patch'
+require File.dirname(__FILE__) + '/lib/pdf_patch'
 
 Redmine::Plugin.register :redmine_hide_estimated_hours do
   name 'Hide estimated hours'
