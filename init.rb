@@ -12,6 +12,6 @@ Redmine::Plugin.register :redmine_hide_estimated_hours do
   url 'https://github.com/return1/redmine_hide_estimated_hours'
   author_url 'http://return1.at/'
 
-  requires_redmine :version => '5.0'
+  requires_redmine :version => '5.1'
 
 end
