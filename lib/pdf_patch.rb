@@ -29,7 +29,7 @@ module PdfPatch
       i = 1
       issue.ancestors.visible.each do |ancestor|
         pdf.set_x(base_x + i)
-        buf = "#{ancestor.tracker} # #{ancestor.id} (#{ancestor.status.to_s}): #{ancestor.subject}"
+        buf = "#{ancestor.tracker} # #{ancestor.id} (#{ancestor.status}): #{ancestor.subject}"
         pdf.RDMMultiCell(190 - i, 5, buf)
         i += 1 if i < 35
       end

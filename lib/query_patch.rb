@@ -43,6 +43,7 @@ module IssueQueryPatch
       if (!User.current.allowed_to?(:view_time_entries, project) and !User.current.admin)
         @available_columns.delete_if { |querycolumn| querycolumn.name == :estimated_hours } #remove :estimated_hours from Query.available_columns
         @available_columns.delete_if { |querycolumn| querycolumn.name == :total_estimated_hours } #remove :total_estimated_hours from Query.available_columns
+        @available_columns.delete_if { |querycolumn| querycolumn.name == :estimated_remaining_hours } #remove :estimated_remaining_hours from Query.available_columns
       end
       return @available_columns
     end
