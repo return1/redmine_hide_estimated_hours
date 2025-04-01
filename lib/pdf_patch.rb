@@ -6,7 +6,6 @@ module PdfPatch
   def self.included(base)
     base.send(:include, InstanceMethods)
     base.class_eval do
-      unloadable # Send unloadable so it will not be unloaded in development
       alias_method :issue_to_pdf_without_patch, :issue_to_pdf
       alias_method :issue_to_pdf, :issue_to_pdf_with_patch
     end

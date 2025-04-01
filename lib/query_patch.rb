@@ -5,7 +5,6 @@ module QueryPatch
   def self.included(base)
     base.send(:include, InstanceMethods)
     base.class_eval do
-      unloadable # Send unloadable so it will not be unloaded in development
       alias_method :available_filters_without_patch, :available_filters
       alias_method :available_filters, :available_filters_with_patch
     end
@@ -28,7 +27,6 @@ module IssueQueryPatch
   def self.included(base)
     base.send(:include, InstanceMethods)
     base.class_eval do
-      unloadable # Send unloadable so it will not be unloaded in development
       alias_method :available_columns_without_patch, :available_columns
       alias_method :available_columns, :available_columns_with_patch
     end

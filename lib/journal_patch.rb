@@ -5,7 +5,6 @@ module JournalPatch
   def self.included(base)
     base.send(:include, InstanceMethods)
     base.class_eval do
-      unloadable # Send unloadable so it will not be unloaded in development
       alias_method :visible_details_without_patch, :visible_details
       alias_method :visible_details, :visible_details_with_patch
     end
