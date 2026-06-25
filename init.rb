@@ -12,6 +12,7 @@ Redmine::Plugin.register :redmine_hide_estimated_hours do
   url 'https://github.com/return1/redmine_hide_estimated_hours'
   author_url 'http://return1.at/'
 
-  requires_redmine :version => '6.1.3'
+  # Redmine treats the upper bound prefix '6.1' as any 6.1.x release.
+  requires_redmine :version => '6.1.3'..'6.1'
 
 end
