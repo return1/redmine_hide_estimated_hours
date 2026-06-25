@@ -33,6 +33,8 @@ Uncheck the "View spent time" permission for any role that should not be able to
 Redmine >= 6.1.3, < 6.2
 (see branches for older compatible versions)
 
+Tested with Redmine 6.1.3. If you're on a higher 6.1.x version, the plugin will load but I haven't tested it — use at your own risk. 6.2+ is blocked intentionally.
+
 
 ## License
 
